@@ -85,9 +85,11 @@ function centuryyearkeyanswer(problem){
 
 function centuryyearkeyvalidate(answer, inputnumber){
   if(inputnumber.length == 0) return false;
+  if(inputnumber.length > 1) return "fail";
 
   let parsed = parseInt(inputnumber);
-  if(parsed + "" == "NaN") return false;
+  if(parsed + "" == "NaN") return "fail";
 
-  return answer == parsed;
+  if(answer == parsed) return true;
+  return "fail";
 }

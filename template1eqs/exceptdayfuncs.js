@@ -41,7 +41,7 @@ function addexceptday(main=false, self=exceptdaypreset, name=null){
   if(recentduplicate()) return;
 
   let problem = document.createElement("p");
-  problem.innerHTML = monthkeymonths[monthindex] + " " + year;
+  problem.innerHTML = calendarformatmonthyear(monthindex, year);
 
   problem.classList.add("problem");
   problem.classList.add("monthnumproblem");
@@ -56,15 +56,14 @@ function addexceptday(main=false, self=exceptdaypreset, name=null){
 }
 
 function exceptdayspeech(problem){
-  return monthkeymonths[problem[0]] + " " + problem[1] + " except day";
+  return calendarformatmonthyear(problem[0], problem[1]) + " except day";
 }
 
 function exceptdayanswer(problem){
   let previousMonthLastDay = new Date(problem[1], problem[0], 0);
-  let answers = ["m", "tu", "w", "th", "f", "sa", "su"];
   let day = previousMonthLastDay.getDay() - 1;
 
-  if(day < 0) day = answers.length - 1;
+  if(day < 0) day = 6;
 
-  return answers[day];
+  return day;
 }

@@ -20,11 +20,19 @@ let calendarpreset = {
       },
       "custom":{}
     },
-    range1: [0,8999942400000]
+    range1: [0,8999942400000],
+    dateOrder: "DMY",
+    monthFormat: "numeric2",
+    dateSeparator: "/",
+    monthLanguage: "en"
   },
   settingsgui: {
 
     range1: null,
+    dateOrder: null,
+    monthFormat: null,
+    dateSeparator: null,
+    monthLanguage: null,
     doneinit: false,
     init: basicpresetgendate("Date Range"),
     setpreset: setpresetdate,
@@ -164,6 +172,66 @@ function basicpresetdate(self, range1label, changegui){
   modesettingssection.appendChild(numRange);
   modesettingssection.appendChild(range1[0])
 
+  function makecalendarselect(label, key, options){
+    let settingLabel = document.createElement("p");
+    settingLabel.innerHTML = label;
+    settingLabel.classList.add("settinglabel");
+    settingLabel.style.marginTop = "20px";
+
+    let parent = document.createElement("div");
+    parent.style.display = "flex";
+    parent.style.justifyContent = "center";
+
+    let select = document.createElement("select");
+    select.classList.add("numinput");
+    select.style.width = "180px";
+    select.style.margin = "7px";
+
+    for(var i = 0; i < options.length; i++){
+      let option = document.createElement("option");
+      option.value = options[i][0];
+      option.innerHTML = options[i][1];
+      select.appendChild(option);
+    }
+
+    select.value = self.settings[key];
+    select.onchange = () => {
+      self.settings[key] = select.value;
+      self.settingsgui.matchpreset(self);
+      init();
+    };
+
+    parent.appendChild(select);
+    modesettingssection.appendChild(settingLabel);
+    modesettingssection.appendChild(parent);
+    self.settingsgui[key] = select;
+  }
+
+  makecalendarselect("Date Order", "dateOrder", [
+    ["DMY", "Day Month Year"],
+    ["MDY", "Month Day Year"],
+    ["YMD", "Year Month Day"]
+  ]);
+
+  makecalendarselect("Month Format", "monthFormat", [
+    ["numeric2", "01"],
+    ["numeric", "1"],
+    ["short", "Jan"],
+    ["long", "January"]
+  ]);
+
+  makecalendarselect("Separator", "dateSeparator", [
+    ["/", "/"],
+    ["-", "-"],
+    [".", "."],
+    ["space", "space"]
+  ]);
+
+  makecalendarselect("Month Language", "monthLanguage", [
+    ["en", "English"],
+    ["es", "Spanish"]
+  ]);
+
   function oninput(input){
     return input.valueAsNumber;
   }
@@ -219,6 +287,56 @@ function setpresetdate(self, presetname){
 
 }
 
+function calendardateseparator(settings=calendarpreset.settings){
+  return settings.dateSeparator == "space" ? " " : settings.dateSeparator;
+}
+
+function calendarformatmonth(month, settings=calendarpreset.settings){
+  let monthnames = {
+    en: {
+      short: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      long: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    },
+    es: {
+      short: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
+      long: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
+    }
+  };
+
+  let monthpart = month + 1;
+  if(settings.monthFormat == "numeric2") monthpart = (month + 1).toString().padStart(2, "0");
+  if(settings.monthFormat == "short" || settings.monthFormat == "long"){
+    let language = monthnames[settings.monthLanguage] == undefined ? "en" : settings.monthLanguage;
+    monthpart = monthnames[language][settings.monthFormat][month];
+  }
+
+  return monthpart;
+}
+
+function calendarformatmonthyear(month, year, settings=calendarpreset.settings){
+  let separator = calendardateseparator(settings);
+  let monthpart = calendarformatmonth(month, settings);
+
+  if(settings.dateOrder == "YMD") return [year, monthpart].join(separator);
+  return [monthpart, year].join(separator);
+}
+
+function calendarformatdate(date, settings=calendarpreset.settings){
+  let day = date.getDate();
+  let month = date.getMonth();
+  let year = date.getFullYear();
+  let separator = calendardateseparator(settings);
+  let monthpart = calendarformatmonth(month, settings);
+
+  let parts = {
+    D: day,
+    M: monthpart,
+    Y: year
+  };
+
+  return settings.dateOrder.split("").map(part => parts[part]).join(separator);
+}
+
 
 
 
@@ -251,7 +369,7 @@ function addcalendar(main=false,self=calendarpreset,name=null){
 
   let part = problemarr[0];
 
-  problem.innerHTML = new Date(part).toLocaleDateString();
+  problem.innerHTML = calendarformatdate(new Date(part), self.settings);
   problem.classList.add("problem");
 
   if(main) problem.id = "mainproblem"
@@ -269,7 +387,7 @@ function addcalendar(main=false,self=calendarpreset,name=null){
 
 function calendarspeech(problem){
 
-  return problem[0];
+  return calendarformatdate(new Date(problem[0]));
 
 }
 
@@ -291,45 +409,33 @@ function calendartype(e){
 
 function calendaranswer(problem){
 
-  let answers = ["m", "tu", "w", "th", "f", "sa", "su"];
   const d = new Date(problem[0]);
   let day = d.getDay();
 
   day--;
-  if(day < 0) day = answers.length-1;
+  if(day < 0) day = 6;
 
-  return answers[day];
+  return day;
 
 }
 
 function calendarvalidate(answer, inputnumber){
 
-  let input = inputnumber+"";
-  input = input.toLowerCase();
+  let input = (inputnumber + "").toLowerCase().trim();
+  let singlecharanswers = ["l", "m", "x", "j", "v", "s", "d"];
 
-  let numericanswers = {
-    su: 0,
-    m: 1,
-    tu: 2,
-    w: 3,
-    th: 4,
-    f: 5,
-    sa: 6
-  }
+  if(input.length == 0) return false;
+  if(input.length > 1) return "fail";
 
   if(/^[0-6]$/.test(input)){
-    if(numericanswers[answer] == undefined) return "fail";
-    if(Number(input) == numericanswers[answer]) return true;
+    if(Number(input) == answer + 1) return true;
+    if(answer == 6 && input == "0") return true;
     return "fail";
   }
 
-  if(input.length < answer.length){
-    if(input[0] != answer[0]) return "fail";
-    return false;
-  }
-
-  if(input.startsWith(answer)) return true;
-  else return "fail"
+  if(singlecharanswers.indexOf(input) == -1) return "fail";
+  if(input == singlecharanswers[answer]) return true;
+  return "fail";
 
 
 

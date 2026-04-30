@@ -214,16 +214,13 @@ function leapyearkeyvalidate(answer, inputnumber){
 
   let input = (inputnumber + "").toLowerCase().trim();
   if(input.length == 0) return false;
+  if(input.length > 1) return "fail";
 
   if(answer === 6){
-    // leap year: accept "yes", "1" or "6"
-    if(input === "6" || input === "1" || input === "yes") return true;
-    if("yes".startsWith(input)) return false;
+    if(input === "6" || input === "y") return true;
     return "fail";
   } else {
-    // non-leap year: accept "no" or "0"
-    if(input === "0" || input === "no") return true;
-    if("no".startsWith(input)) return false;
+    if(input === "0" || input === "n") return true;
     return "fail";
   }
 

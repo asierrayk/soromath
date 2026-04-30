@@ -42,7 +42,7 @@ function addmonthkey(main=false, self=monthkeypreset, name=null){
   if(recentduplicate()) return;
 
   let problem = document.createElement("p");
-  problem.innerHTML = monthkeymonths[monthindex];
+  problem.innerHTML = calendarformatmonth(monthindex);
 
   problem.classList.add("problem");
   problem.classList.add("monthnumproblem");
@@ -57,7 +57,7 @@ function addmonthkey(main=false, self=monthkeypreset, name=null){
 }
 
 function monthkeyspeech(problem){
-  return monthkeymonths[problem[0]] + " month key";
+  return calendarformatmonth(problem[0]) + " month key";
 }
 
 function monthkeytype(e){
@@ -82,5 +82,7 @@ function monthkeyanswer(problem){
 
 function monthkeyvalidate(answer, inputnumber){
   if(inputnumber.length == 0) return false;
-  return answer == parseInt(inputnumber);
+  if(inputnumber.length > 1) return "fail";
+  if(answer == parseInt(inputnumber)) return true;
+  return "fail";
 }

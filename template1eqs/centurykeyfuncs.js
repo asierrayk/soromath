@@ -68,5 +68,7 @@ function centurykeyanswer(problem){
 
 function centurykeyvalidate(answer, inputnumber){
   if(inputnumber.length == 0) return false;
-  return answer == parseInt(inputnumber);
+  if(inputnumber.length > 1) return "fail";
+  if(answer == parseInt(inputnumber)) return true;
+  return "fail";
 }
