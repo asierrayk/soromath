@@ -75,6 +75,13 @@
   justify-content: right;
 }
 
+.correctanswerhint{
+  color: red;
+  font-size: 18px;
+  margin-left: 12px;
+  opacity: 0.8;
+}
+
 .trigproblem{
   height: 90px;
 }

@@ -5,6 +5,7 @@ let exceptdaypreset = {
   ontype: calendartype,
   getanswer: exceptdayanswer,
   validate: calendarvalidate,
+  answerText: dayofweekanswertext,
   speechText: exceptdayspeech,
   name: "day of week [except day]",
   settings: {

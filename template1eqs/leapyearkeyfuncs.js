@@ -5,6 +5,7 @@ let leapyearkeypreset = {
   ontype: leapyearkeytype,
   getanswer: leapyearkeyanswer,
   validate: leapyearkeyvalidate,
+  answerText: leapyearkeyanswertext,
   speechText: leapyearkeyspeech,
   name: "day of week [leap year]",
   settings: {
@@ -210,6 +211,11 @@ function leapyearkeyanswer(problem){
   return isLeapYear(problem[0]) ? 6 : 0;
 }
 
+function leapyearkeyanswertext(answer){
+  if(answer === 6) return "bisiesto: s / 6";
+  return "no bisiesto: n / 0";
+}
+
 function leapyearkeyvalidate(answer, inputnumber){
 
   let input = (inputnumber + "").toLowerCase().trim();
@@ -217,7 +223,7 @@ function leapyearkeyvalidate(answer, inputnumber){
   if(input.length > 1) return "fail";
 
   if(answer === 6){
-    if(input === "6" || input === "y") return true;
+    if(input === "6" || input === "s") return true;
     return "fail";
   } else {
     if(input === "0" || input === "n") return true;

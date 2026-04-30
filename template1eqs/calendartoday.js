@@ -7,6 +7,7 @@ let calendarpreset = {
   ontype: calendartype,
   getanswer: calendaranswer,
   validate: calendarvalidate,
+  answerText: calendarkeyanswertext,
   speechText: calendarspeech,
   name: "date to day of week",
   settings: {
@@ -417,6 +418,45 @@ function calendaranswer(problem){
 
   return day;
 
+}
+
+function dayofweekanswertext(answer){
+  let singlecharanswers = ["l", "m", "x", "j", "v", "s", "d"];
+  let numberanswer = answer + 1;
+  if(answer == 6) numberanswer = 0;
+  return singlecharanswers[answer] + " / " + numberanswer;
+}
+
+function calendarcenturykey(year){
+  let century = Math.floor(year / 100);
+  let centurymod = ((century % 4) + 4) % 4;
+  return 6 - 2 * centurymod;
+}
+
+function calendaryearkey(year){
+  let yearpart = ((year % 100) + 100) % 100;
+  return (yearpart + Math.floor(yearpart / 4)) % 7;
+}
+
+function calendarnumericanswer(answer){
+  if(answer == 6) return 0;
+  return answer + 1;
+}
+
+function calendarkeyanswertext(answer, problem){
+  let date = new Date(problem[0]);
+  let year = date.getFullYear();
+  let month = date.getMonth();
+  let daykey = date.getDate() % 7;
+  let monthkey = monthkeyvalues[month];
+  let centurykey = calendarcenturykey(year);
+  let yearkey = calendaryearkey(year);
+  let leapkey = isLeapYear(year) && month < 2 ? -1 : 0;
+  let parts = [daykey, monthkey, centurykey, yearkey];
+
+  if(leapkey != 0) parts.push(leapkey);
+
+  return parts.join(" + ").replace(" + -", " -") + " = " + calendarnumericanswer(answer);
 }
 
 function calendarvalidate(answer, inputnumber){

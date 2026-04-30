@@ -4,6 +4,7 @@ let t1heighttrack = 0;
 let problemindex = 0;
 let problemlist = [];
 let stats = [0,0];
+let wronganswers = [];
 
 let totaltime = 15000;
 let totalproblems = null;
@@ -132,6 +133,26 @@ function template1switch(){
 
 }
 
+function template1answertext(problemtype, answer, problem){
+  if("answerText" in modes[problemtype]){
+    return modes[problemtype].answerText(answer, problem);
+  }
+
+  return answer + "";
+}
+
+function template1problemtext(problemElement, problemtype){
+  let text = problemElement.textContent.trim();
+  if(text.length != 0) return text;
+  return problemtype;
+}
+
+function template1showcorrectanswer(problemElement, answerText){
+  let answerElement = document.createElement("span");
+  answerElement.classList.add("correctanswerhint");
+  answerElement.textContent = "correct: " + answerText;
+  problemElement.appendChild(answerElement);
+}
 
 function template1type(e){
 
@@ -167,6 +188,7 @@ function template1enter(e, press=false){
     let problem = problemlist[problemindex]
 
     let answer = modes[problemtype].getanswer(problem[1]);
+    let answerText = template1answertext(problemtype, answer, problem[1]);
     let correct = modes[problemtype].validate(answer, inputnumber);
 
 
@@ -214,8 +236,18 @@ function template1enter(e, press=false){
 
     }
     else{
-      problems.children[mainproblemindex].classList.add("wronganswer");
-      problems.children[mainproblemindex].classList.add("completedproblem");
+      let problemElement = problems.children[mainproblemindex];
+      let questionText = template1problemtext(problemElement, problemtype);
+
+      problemElement.classList.add("wronganswer");
+      problemElement.classList.add("completedproblem");
+      template1showcorrectanswer(problemElement, answerText);
+      wronganswers.push({
+        mode: problemtype,
+        question: questionText,
+        input: inputnumber,
+        answer: answerText
+      });
       stats[1]++;
       problemcomplete(false);
 
@@ -230,10 +262,11 @@ function template1enter(e, press=false){
     }
 
     let fadeoutelem = problems.children[mainproblemindex];
-
-    setTimeout(() => {
-      $(fadeoutelem).animate({ opacity: '0' }, {duration: 400, easing:"linear"});
-    }, 500)
+    if(correct){
+      setTimeout(() => {
+        $(fadeoutelem).animate({ opacity: '0' }, {duration: 400, easing:"linear"});
+      }, 500)
+    }
 
     if(!(totalproblems != null && problemindex + 1 == totalproblems)){
       let height1 = problems.children[mainproblemindex].getBoundingClientRect().height

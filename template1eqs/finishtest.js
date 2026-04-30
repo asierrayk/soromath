@@ -3,6 +3,7 @@ function restarttest(focus=true){
   stats = [0,0];
   problemindex = 0;
   problemlist = [];
+  wronganswers = [];
   teststarted = 0;
 
   if(testcheckend != null){
@@ -80,6 +81,7 @@ function finishtest(){
 
   document.getElementById("finishcorrect").innerHTML = stats[0] + " correct";
   document.getElementById("finishwrong").innerHTML = stats[1] + " wrong";
+  renderfinishwronganswers();
 
   let cpm = (60000 / teststarted) * stats[0];
   let rawcpm = (60000 / teststarted) * (stats[0] + stats[1]);
@@ -147,4 +149,46 @@ function finishtest(){
   teststarted = 0;
 
 
+}
+
+function renderfinishwronganswers(){
+  let container = document.getElementById("finishwronganswers");
+  if(container == null) return;
+
+  container.innerHTML = "";
+
+  if(wronganswers.length == 0){
+    container.style.display = "none";
+    return;
+  }
+
+  container.style.display = "";
+
+  let title = document.createElement("p");
+  title.classList.add("finishtext");
+  title.classList.add("finishwronganswerstitle");
+  title.textContent = "review";
+  container.appendChild(title);
+
+  for(var i = 0; i < wronganswers.length; i++){
+    let item = document.createElement("div");
+    item.classList.add("finishwronganswer");
+
+    let question = document.createElement("span");
+    question.classList.add("finishwrongquestion");
+    question.textContent = wronganswers[i].question;
+
+    let answer = document.createElement("span");
+    answer.classList.add("finishwrongcorrect");
+    answer.textContent = wronganswers[i].answer;
+
+    let input = document.createElement("span");
+    input.classList.add("finishwronginput");
+    input.textContent = "you: " + wronganswers[i].input;
+
+    item.appendChild(question);
+    item.appendChild(answer);
+    item.appendChild(input);
+    container.appendChild(item);
+  }
 }
