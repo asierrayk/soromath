@@ -102,6 +102,15 @@
   z-index: 1;
 }
 
+.binaryproblem sub{
+  font-size: 0.52em;
+  line-height: 1;
+  vertical-align: baseline;
+  display: inline-block;
+  position: relative;
+  top: 0.35em;
+}
+
 .clockproblem.rightanswer{
   filter: brightness(50%) sepia(100) saturate(100) hue-rotate(100deg)
 }

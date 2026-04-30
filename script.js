@@ -42,6 +42,8 @@ let modes = {
 
   "inches to cm": intocmpreset,
   "cm to inches": cmtoinpreset,
+  "decimal to binary": dectobinpreset,
+  "binary to decimal": bintodecpreset,
 
   "pounds to kg": lbtokgpreset,
   "kg to pounds": kgtolbpreset,
