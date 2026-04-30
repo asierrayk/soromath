@@ -5,7 +5,7 @@ let exceptdaypreset = {
   ontype: calendartype,
   getanswer: exceptdayanswer,
   validate: calendarvalidate,
-  answerText: dayofweekanswertext,
+  answerText: exceptdayanswertext,
   speechText: exceptdayspeech,
   name: "day of week [except day]",
   settings: {
@@ -67,4 +67,8 @@ function exceptdayanswer(problem){
   if(day < 0) day = 6;
 
   return day;
+}
+
+function exceptdayanswertext(answer, problem){
+  return calendarexceptdayanswertext(answer, problem[0], problem[1]);
 }

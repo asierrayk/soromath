@@ -443,8 +443,7 @@ function calendarnumericanswer(answer){
   return answer + 1;
 }
 
-function calendarkeyanswertext(answer, problem){
-  let date = new Date(problem[0]);
+function calendarkeyanswertextfromdate(answer, date){
   let year = date.getFullYear();
   let month = date.getMonth();
   let daykey = date.getDate() % 7;
@@ -453,6 +452,22 @@ function calendarkeyanswertext(answer, problem){
   let yearkey = calendaryearkey(year);
   let leapkey = isLeapYear(year) && month < 2 ? -1 : 0;
   let parts = [daykey, monthkey, centurykey, yearkey];
+
+  if(leapkey != 0) parts.push(leapkey);
+
+  return parts.join(" + ").replace(" + -", " -") + " = " + calendarnumericanswer(answer);
+}
+
+function calendarkeyanswertext(answer, problem){
+  return calendarkeyanswertextfromdate(answer, new Date(problem[0]));
+}
+
+function calendarexceptdayanswertext(answer, month, year){
+  let monthkey = monthkeyvalues[month];
+  let centurykey = calendarcenturykey(year);
+  let yearkey = calendaryearkey(year);
+  let leapkey = isLeapYear(year) && month < 2 ? -1 : 0;
+  let parts = [monthkey, centurykey, yearkey];
 
   if(leapkey != 0) parts.push(leapkey);
 
