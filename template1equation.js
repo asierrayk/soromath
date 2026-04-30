@@ -75,6 +75,7 @@ function template1init(){
   let input = document.getElementById("template1input")
 
   input.value = ""
+  template1clearcorrection();
 
   document.getElementById("difficultyoption").style.display = "";
 
@@ -147,11 +148,20 @@ function template1problemtext(problemElement, problemtype){
   return problemtype;
 }
 
-function template1showcorrectanswer(problemElement, answerText){
-  let answerElement = document.createElement("span");
-  answerElement.classList.add("correctanswerhint");
-  answerElement.textContent = "correct: " + answerText;
-  problemElement.appendChild(answerElement);
+function template1clearcorrection(){
+  let correction = document.getElementById("lastcorrection");
+  if(correction == null) return;
+
+  correction.style.display = "none";
+  correction.textContent = "";
+}
+
+function template1showcorrectanswer(answerText){
+  let correction = document.getElementById("lastcorrection");
+  if(correction == null) return;
+
+  correction.textContent = answerText;
+  correction.style.display = "";
 }
 
 function template1type(e){
@@ -241,7 +251,7 @@ function template1enter(e, press=false){
 
       problemElement.classList.add("wronganswer");
       problemElement.classList.add("completedproblem");
-      template1showcorrectanswer(problemElement, answerText);
+      template1showcorrectanswer(answerText);
       wronganswers.push({
         mode: problemtype,
         question: questionText,

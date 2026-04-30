@@ -75,11 +75,19 @@
   justify-content: right;
 }
 
-.correctanswerhint{
+#lastcorrection{
+  font-family: var(--font_family);
   color: red;
   font-size: 18px;
-  margin-left: 12px;
   opacity: 0.8;
+  position: absolute;
+  left: 50%;
+  top: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  min-height: 22px;
+  max-width: 360px;
+  white-space: normal;
 }
 
 .trigproblem{
@@ -128,6 +136,10 @@
 
 #mainproblem{
   opacity: 1 !important;
+  position: relative;
+}
+
+.inpandexample{
   position: relative;
 }
 
