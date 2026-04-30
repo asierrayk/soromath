@@ -55,6 +55,7 @@ let modes = {
   "day of week [month key]": monthkeypreset,
   "day of week [century key]": centurykeypreset,
   "day of week [leap year]": leapyearkeypreset,
+  "day of week [Year key]": yearkeypreset,
   "date to day of week": calendarpreset,
   "flash anzan": flashanzanpreset
 }
