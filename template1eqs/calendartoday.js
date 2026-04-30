@@ -278,7 +278,7 @@ function calendartype(e){
   let input = document.getElementsByClassName("maininput")[0];
 
   let nonums = "";
-  let nums = "abcdefghijklmnopqrstuvwxyz"
+  let nums = "abcdefghijklmnopqrstuvwxyz0123456789"
 
   for(var i = 0; i < input.value.length; i++){
     if(nums.indexOf(input.value[i]) == -1) continue;
@@ -306,6 +306,22 @@ function calendarvalidate(answer, inputnumber){
 
   let input = inputnumber+"";
   input = input.toLowerCase();
+
+  let numericanswers = {
+    su: 0,
+    m: 1,
+    tu: 2,
+    w: 3,
+    th: 4,
+    f: 5,
+    sa: 6
+  }
+
+  if(/^[0-6]$/.test(input)){
+    if(numericanswers[answer] == undefined) return "fail";
+    if(Number(input) == numericanswers[answer]) return true;
+    return "fail";
+  }
 
   if(input.length < answer.length){
     if(input[0] != answer[0]) return "fail";
