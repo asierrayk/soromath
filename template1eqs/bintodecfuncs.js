@@ -86,7 +86,7 @@ function addbintodec(main=false, self=bintodecpreset, name=null){
 }
 
 function bintodecspeech(problem){
-  return problem[0].toString(2) + " in decimal";
+  return "binario a decimal" + problem[0].toString(2).split("").map((digit) => digit == "0" ? "zero" : "one").join(" ");
 }
 
 function bintodectype(e){

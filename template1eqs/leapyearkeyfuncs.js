@@ -188,7 +188,7 @@ function addleapyearkey(main=false, self=leapyearkeypreset, name=null){
 }
 
 function leapyearkeyspeech(problem){
-  return problem[0] + " leap year key";
+    return "¿Bisiesto " + problem[0] + "?";
 }
 
 function leapyearkeytype(e){

@@ -43,6 +43,8 @@ let calendarpreset = {
 
 }
 
+let calendarinitialdate = new Date(1970, 0, 4, 12, 0, 0, 0).getTime();
+
 
 function basicpresetgendate(range1label){
   return (self, changegui=true) => {basicpresetdate(self, range1label, changegui)}
@@ -357,7 +359,7 @@ function addcalendar(main=false,self=calendarpreset,name=null){
   }
   else{
 
-    num1 = 0;
+    num1 = calendarinitialdate;
     problemarr = [num1]
 
     problemlist.push([name,problemarr]);

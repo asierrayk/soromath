@@ -57,7 +57,7 @@ function addexceptday(main=false, self=exceptdaypreset, name=null){
 }
 
 function exceptdayspeech(problem){
-  return calendarformatmonthyear(problem[0], problem[1]) + " except day";
+  return calendarformatmonthyear(problem[0], problem[1]);
 }
 
 function exceptdayanswer(problem){

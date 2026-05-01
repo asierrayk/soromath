@@ -58,7 +58,7 @@ function addyearkey(main=false, self=yearkeypreset, name=null){
 }
 
 function yearkeyspeech(problem){
-  return formatyearkeyyear(problem[0]) + " year key";
+  return "Año " + formatyearkeyyear(problem[0]);
 }
 
 function yearkeytype(e){

@@ -7,9 +7,21 @@ let voiceshowprevious = true;
 function applyvoiceproblemlayout(){
   let showproblems = !voicemodeenabled || voiceshowprevious;
 
-  document.getElementById("problemscontainer").style.display = showproblems ? "" : "none";
-  document.getElementsByClassName("numrestart")[0].style.left = showproblems ? "50%" : "0%";
-  document.getElementsByClassName("inputexample")[0].style.left = showproblems ? "50%" : "0%";
+  let problemscontainer = document.getElementById("problemscontainer");
+  let numrestart = document.getElementsByClassName("numrestart")[0];
+  let inputexample = document.getElementsByClassName("inputexample")[0];
+
+  if(problemscontainer != null){
+    problemscontainer.style.display = showproblems ? "" : "none";
+  }
+
+  if(numrestart != null){
+    numrestart.style.left = showproblems ? "50%" : "0%";
+  }
+
+  if(inputexample != null){
+    inputexample.style.left = showproblems ? "50%" : "0%";
+  }
 }
 
 function setvoiceshowprevious(value){
@@ -45,7 +57,6 @@ function voicemodeclick(yarr=true){
 
 
     applyvoiceproblemlayout();
-    document.getElementById("voicemodetext").style.display = "";
     document.getElementById("voicerestart").style.display = ""
     document.getElementById("voicesettings").disabled = false;
 
@@ -64,7 +75,6 @@ function voicemodeclick(yarr=true){
     button.classList.remove("textselected");
 
     applyvoiceproblemlayout();
-    document.getElementById("voicemodetext").style.display = "none";
     document.getElementById("voicerestart").style.display = "none"
     document.getElementById("voicesettings").disabled = true;
 

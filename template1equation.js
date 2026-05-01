@@ -54,17 +54,12 @@ function template1init(){
 
 
   if(voicemodeenabled){
-    document.getElementById("voicemodetext").style.display = "";
-
     if (synth.speaking) {
       synth.cancel();
     }
 
     voiceinit();
 
-  }
-  else{
-    document.getElementById("voicemodetext").style.display = "none";
   }
 
   t1heighttrack = 0;
@@ -113,7 +108,7 @@ function template1init(){
         let p1height = problem.getBoundingClientRect().height
         let inputheight = input.getBoundingClientRect().height
 
-        t1heighttrack = (inputheight - p1height) / 2 - 2
+        t1heighttrack = Math.round((inputheight - p1height) / 2 - 21)
         document.getElementById("template1problems").style.top = t1heighttrack + "px";
       }
       if(i > 0) problem.classList.add("hiddenuntilstart");
@@ -202,11 +197,11 @@ function template1enter(e, press=false){
 
     console.log(answer, correct)
 
+    if(problemindex == 0 && correct != true) return;
+
     if(voicemodeenabled && problemindex == 0){
 
       starttest();
-      correct = true;
-      document.getElementById("voicemodetext").style.display = "none";
       let mask = document.getElementsByClassName("problemmask")[0]
       mask.style.height = "1000px";
 

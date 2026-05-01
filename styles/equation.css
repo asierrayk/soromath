@@ -4,18 +4,7 @@
 
 
 #voicemodetext{
-
-  font-family: var(--font_family);
-  color: var(--text_color);
-  font-size: 20px;
-  margin-bottom: 0px;
-  opacity: 0.6;
-
-  position: relative;
-  display: flex;
-  justify-content: space-around;
-  left: 0;
-  right: 0;
+  display: none !important;
 
 }
 
@@ -169,6 +158,7 @@
 .timercontainer{
   text-align: center;
   margin-top: 40px;
+  margin-bottom: 0;
 }
 
 .numrestart{
@@ -176,6 +166,8 @@
   position: relative;
   top: 30px;
   left: 50%;
+  gap: 8px;
+  align-items: stretch;
 }
 
 @media screen and (max-width: 1000px) {
@@ -193,12 +185,14 @@
 
   #restarttest{
     width: 120px !important;
+    height: 40px !important;
     padding-left: 5px !important;
     padding-right: 5px !important;
   }
 
   #voicerestart{
     width: 120px !important;
+    height: 40px !important;
     padding-left: 5px !important;
     padding-right: 5px !important;
   }
@@ -217,16 +211,36 @@
 #restarttest{
   position: relative;
   width: 50px;
-  height: 50px;
+  height: 40px;
+  min-height: 40px;
+  max-height: 40px;
   font-size: 30px;
-  padding: 0px;
+  padding: 0px !important;
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1;
+  flex: 0 0 40px;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 #voicerestart{
   width: 50px;
-  height: 50px;
+  height: 40px;
+  min-height: 40px;
+  max-height: 40px;
   font-size: 30px;
-  padding: 0px;
+  padding: 0px !important;
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1;
+  flex: 0 0 40px;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 #restarttest:focus{
@@ -260,6 +274,7 @@
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  height: 40px;
 }
 
 .numrestart {

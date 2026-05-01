@@ -57,7 +57,7 @@ function addmonthkey(main=false, self=monthkeypreset, name=null){
 }
 
 function monthkeyspeech(problem){
-  return calendarformatmonth(problem[0]) + " month key";
+  return calendarformatmonth(problem[0]);
 }
 
 function monthkeytype(e){

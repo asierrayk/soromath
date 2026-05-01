@@ -63,7 +63,7 @@ function addcenturyyearkey(main=false, self=centuryyearkeypreset, name=null){
 }
 
 function centuryyearkeyspeech(problem){
-  return problem[0] + " century plus year key";
+  return problem[0];
 }
 
 function centuryyearkeytype(e){

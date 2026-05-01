@@ -43,7 +43,15 @@ function addcenturykey(main=false, self=centurykeypreset, name=null){
 }
 
 function centurykeyspeech(problem){
-  return centurykeylabels[problem[0]] + " century key";
+  const speechMap = {
+    0: "mil seiscientos equis equis",
+    1: "mil setecientos equis equis",
+    2: "mil ochocientos equis equis",
+    3: "mil novecientos equis equis",
+    4: "dos mil equis equis",
+    5: "dos mil cien equis equis"
+  };
+  return speechMap[problem[0]];
 }
 
 function centurykeytype(e){

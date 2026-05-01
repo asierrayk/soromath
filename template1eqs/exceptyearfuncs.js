@@ -14,16 +14,18 @@ let exceptyearpreset = {
 }
 
 let exceptyearmonths = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+const exceptyearmaxdays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+const exceptyearmonthkeys = [0, 3, 3, 6, 1, 4, 6, 2, 5, 0, 3, 5];
 
 function addexceptyear(main=false, self=exceptyearpreset, name=null){
-  let days = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
-  let day = days[Math.floor(Math.random() * days.length)];
-  let month = exceptyearmonths[Math.floor(Math.random() * exceptyearmonths.length)];
+  let monthIndex = Math.floor(Math.random() * exceptyearmonths.length);
+  let day = Math.floor(Math.random() * exceptyearmaxdays[monthIndex]) + 1;
   if(main){
-    day = 6;
-    month = "enero";
+    day = 7;
+    monthIndex = 0;
   }
-  problemlist.push([name, [day, month]]);
+  let month = exceptyearmonths[monthIndex];
+  problemlist.push([name, [day, monthIndex]]);
   if(recentduplicate()) return;
   let problem = document.createElement("p");
   problem.innerHTML = day + " " + month;
@@ -36,18 +38,17 @@ function addexceptyear(main=false, self=exceptyearpreset, name=null){
 }
 
 function exceptyearspeech(problem){
-  return problem[0] + " " + problem[1] + " except year";
+  return problem[0] + " " + exceptyearmonths[problem[1]];
 }
 
 function exceptyearanswer(problem){
-  let days = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
-  let day = days.indexOf(problem[0]) + 1;
-  let month = exceptyearmonths.indexOf(problem[1]) + 1;
-  return (day + month) % 7;
+  let day = problem[0];
+  let monthKey = exceptyearmonthkeys[problem[1]];
+  return (day % 7 + monthKey) % 7;
 }
 
 function exceptyearanswertext(answer, problem){
-  return problem[0] + " + " + (exceptyearmonths.indexOf(problem[1]) + 1) + " = " + answer;
+  return problem[0]%7 + " +  " + exceptyearmonthkeys[problem[1]] + " = " + answer;
 }
 
 function exceptyeartype(e){
