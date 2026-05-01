@@ -40,26 +40,30 @@ let modes = {
   "trigonometry":trigpreset,
   "clock to time": clockpreset,
 
-  "inches to cm": intocmpreset,
-  "cm to inches": cmtoinpreset,
   "decimal to binary": dectobinpreset,
   "binary to decimal": bintodecpreset,
+
+  "day of week [month key]": monthkeypreset,
+  "day of week [century key]": centurykeypreset,
+  "day of week [year key]": yearkeypreset,
+  "day of week [century+year key]": centuryyearkeypreset,
+  "day of week [except year]": exceptyearpreset,
+  "day of week [except day]": exceptdaypreset,
+  "day of week [leap year]": leapyearkeypreset,
+  "date to day of week": calendarpreset,
+  "flash anzan": flashanzanpreset,
+
+  "month to number": monthnumpreset,
+
+  "inches to cm": intocmpreset,
+  "cm to inches": cmtoinpreset,
 
   "pounds to kg": lbtokgpreset,
   "kg to pounds": kgtolbpreset,
 
   "°C to °F": celctofpreset,
-  "°F to °C": ftocelcpreset,
+  "°F to °C": ftocelcpreset
 
-  "month to number": monthnumpreset,
-  "day of week [month key]": monthkeypreset,
-  "day of week [century key]": centurykeypreset,
-  "day of week [leap year]": leapyearkeypreset,
-  "day of week [century+year key]": centuryyearkeypreset,
-  "day of week [except day]": exceptdaypreset,
-  "day of week [Year key]": yearkeypreset,
-  "date to day of week": calendarpreset,
-  "flash anzan": flashanzanpreset
 }
 
 let currentversion = "1";
@@ -101,6 +105,26 @@ function loaddifficulty(){
   }
 
   currentmode = difficultysettings.currentmode;
+
+  // Keep compatibility with renamed/removed modes saved in localStorage.
+  if(Array.isArray(currentmode)){
+    let filteredModes = [];
+
+    for(var k = 0; k < currentmode.length; k++){
+      if(modes[currentmode[k]] != undefined){
+        filteredModes.push(currentmode[k]);
+      }
+    }
+
+    if(filteredModes.length == 0){
+      filteredModes = ["addition"];
+    }
+
+    currentmode = filteredModes;
+  }
+  else{
+    currentmode = ["addition"];
+  }
   problemmode = difficultysettings.problemmode;
   totaltime = difficultysettings.totaltime;
   totalproblems = difficultysettings.totalproblems;

@@ -34,7 +34,7 @@ function addexceptday(main=false, self=exceptdaypreset, name=null){
 
   if(main){
     monthindex = 0;
-    year = 2000;
+    year = 2001;
   }
 
   problemlist.push([name, [monthindex, year]]);

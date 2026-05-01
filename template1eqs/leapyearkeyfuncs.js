@@ -165,7 +165,7 @@ function addleapyearkey(main=false, self=leapyearkeypreset, name=null){
   let year = Math.floor(Math.random() * (self.settings.range1[1] - self.settings.range1[0] + 1)) + self.settings.range1[0];
 
   if(main){
-    year = 2000;
+    year = 1900;
   }
 
   problemlist.push([name, [year]]);

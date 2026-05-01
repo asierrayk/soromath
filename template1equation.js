@@ -98,27 +98,25 @@ function template1init(){
 
     problemlist = [];
 
-    for(var i = 0; i < 7; i++){
+    let numproblems = totalproblems != null ? totalproblems + 1 : 7;
+    for(var i = 0; i < numproblems; i++){
 
       let problemtype = currentmode[Math.floor(Math.random() * currentmode.length)];
 
-      if(totalproblems != null && problemlist.length == totalproblems) return;
+      if(totalproblems != null && problemlist.length == numproblems) return;
 
       if(i == 0) console.log(problemtype);
 
       let problem = addrandproblem();
 
       if(i == 0){
-
-
         let p1height = problem.getBoundingClientRect().height
         let inputheight = input.getBoundingClientRect().height
 
         t1heighttrack = (inputheight - p1height) / 2 - 2
         document.getElementById("template1problems").style.top = t1heighttrack + "px";
-
       }
-
+      if(i > 0) problem.classList.add("hiddenuntilstart");
     }
   }, currentheight == newheight ? 0 : 100);
 
@@ -173,7 +171,7 @@ function template1type(e){
 
 function template1enter(e, press=false){
 
-    if(totalproblems != null && problemindex == totalproblems){
+    if(totalproblems != null && problemindex == totalproblems + 1){
       console.log("RETURN");
       return;
     }
@@ -230,18 +228,24 @@ function template1enter(e, press=false){
 
     }
 
-    if(correct){
+    if(problemindex == 0) {
+      // No contar la pregunta inicial para stats ni wronganswers, solo marcar como completada visualmente
+      problems.children[mainproblemindex].classList.add("completedproblem");
+      // Revelar todos los problemas siguientes
+      for(let i = 1; i < problems.children.length; i++){
+        problems.children[i].classList.remove("hiddenuntilstart");
+      }
+    }
+    else if(correct){
       problems.children[mainproblemindex].classList.add("rightanswer");
       problems.children[mainproblemindex].classList.add("completedproblem");
       stats[0]++;
       problemcomplete(true)
 
       if(voicemodeenabled){
-
         let correct = flashcorrect.cloneNode();
         correct.volume = 0.07
         correct.play()
-
       }
 
     }
@@ -262,11 +266,9 @@ function template1enter(e, press=false){
       problemcomplete(false);
 
       if(voicemodeenabled){
-
         let wrong = flashwrong.cloneNode()
         wrong.volume = 0.07
         wrong.play()
-
       }
 
     }
@@ -278,7 +280,7 @@ function template1enter(e, press=false){
     //   }, 500)
     // }
 
-    if(!(totalproblems != null && problemindex + 1 == totalproblems)){
+    if(!(totalproblems != null && problemindex + 1 == totalproblems + 1)){
       let height1 = problems.children[mainproblemindex].getBoundingClientRect().height
       let height2 = problems.children[mainproblemindex+1].getBoundingClientRect().height
 
@@ -298,9 +300,10 @@ function template1enter(e, press=false){
 
     problemindex++;
 
-    if( !(totalproblems != null && problemlist.length >= totalproblems) ){
+    if( !(totalproblems != null && problemlist.length >= totalproblems + 1) ){
 
-      addrandproblem();
+      let newproblem = addrandproblem();
+      if(problemindex == 0 && newproblem) newproblem.classList.add("hiddenuntilstart");
 
     }
 
@@ -321,11 +324,21 @@ function addrandproblem(){
 
   let problem = null;
 
+  if(Array.isArray(currentmode) == false || currentmode.length == 0){
+    currentmode = ["addition"];
+  }
+
   while(true){
 
     gentrials++;
 
     let nextproblem = currentmode[Math.floor(Math.random() * currentmode.length)];
+
+    if(modes[nextproblem] == undefined){
+      currentmode = ["addition"];
+      nextproblem = "addition";
+    }
+
     problem = modes[nextproblem].addproblem(problemlist.length == 0, modes[nextproblem], name=nextproblem);
 
 

@@ -75,6 +75,11 @@
   justify-content: right;
 }
 
+.hiddenuntilstart{
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
 #lastcorrection{
   font-family: var(--font_family);
   color: red;

@@ -7,6 +7,15 @@ let centuryyearkeypreset = {
   validate: centuryyearkeyvalidate,
   speechText: centuryyearkeyspeech,
   name: "day of week [century+year key]",
+  answerText: function(answer, problem) {
+    let year = problem[0];
+    let century = Math.floor(year / 100);
+    let yearpart = year % 100;
+    let centurykey = (6 - 2 * (century % 4) + 7) % 7;
+    let yearkey = (yearpart + Math.floor(yearpart / 4)) % 7;
+    let sum = (centurykey + yearkey) % 7;
+    return `${centurykey} + ${yearkey} = ${sum}`;
+  },
   settings: {
     preset: "easy",
     presets: {
@@ -31,7 +40,7 @@ function addcenturyyearkey(main=false, self=centuryyearkeypreset, name=null){
   let year = Math.floor(Math.random() * (self.settings.range1[1] - self.settings.range1[0] + 1)) + self.settings.range1[0];
 
   if(main){
-    year = 1904;
+    year = 1906;
   }
 
   problemlist.push([name, [year]]);

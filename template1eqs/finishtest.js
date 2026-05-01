@@ -51,7 +51,7 @@ function starttest(){
 
     teststarted += dt;
 
-    if((totalproblems != null && problemindex == totalproblems) || (totaltime != null && teststarted >= totaltime) ){
+    if((totalproblems != null && problemindex == totalproblems + 1) || (totaltime != null && teststarted >= totaltime) ){
 
       console.log("HERE");
 

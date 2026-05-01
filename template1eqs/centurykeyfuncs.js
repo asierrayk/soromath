@@ -20,7 +20,7 @@ function addcenturykey(main=false, self=centurykeypreset, name=null){
   let centuryindex = Math.floor(Math.random() * centurykeylabels.length);
 
   if(main){
-    centuryindex = 0;
+    centuryindex = 3;
   }
 
   problemlist.push([name, [centuryindex]]);
