@@ -28,7 +28,7 @@ function addexceptyear(main=false, self=exceptyearpreset, name=null){
   problemlist.push([name, [day, monthIndex]]);
   if(recentduplicate()) return;
   let problem = document.createElement("p");
-  problem.innerHTML = day + " " + month;
+  problem.innerHTML = day + " de " + month;
   problem.classList.add("problem");
   problem.classList.add("monthnumproblem");
   if(main) problem.id = "mainproblem";
