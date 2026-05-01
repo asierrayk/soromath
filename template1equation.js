@@ -271,12 +271,12 @@ function template1enter(e, press=false){
 
     }
 
-    let fadeoutelem = problems.children[mainproblemindex];
-    if(correct){
-      setTimeout(() => {
-        $(fadeoutelem).animate({ opacity: '0' }, {duration: 400, easing:"linear"});
-      }, 500)
-    }
+    // let fadeoutelem = problems.children[mainproblemindex];
+    // if(correct){
+    //   setTimeout(() => {
+    //     $(fadeoutelem).animate({ opacity: '0' }, {duration: 400, easing:"linear"});
+    //   }, 500)
+    // }
 
     if(!(totalproblems != null && problemindex + 1 == totalproblems)){
       let height1 = problems.children[mainproblemindex].getBoundingClientRect().height

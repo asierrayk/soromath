@@ -329,12 +329,13 @@
           </div>
 
           <div class="inpandexample">
-            <p id="lastcorrection" style="display: none"></p>
-            <div class="numrestart">
-              <input class="numinput maininput" placeholder="Type here" id="template1input" oninput = "template1type(event); template1enter(event)" onkeypress = "template1enter(event,true)"></input>
-              <button id="voicerestart" class="zulubutton" onclick="revoiceproblem()" style="display: none">🗣️</button>
-              <button id="restarttest" class="zulubutton" onclick="restarttest()">↻</button>
-
+            <div style="display: flex; flex-direction: row; align-items: center; width: 100%; position: relative; gap: 8px;">
+              <div class="numrestart" style="margin-bottom: 0;">
+                <input class="numinput maininput" placeholder="Type here" id="template1input" oninput = "template1type(event); template1enter(event)" onkeypress = "template1enter(event,true)"></input>
+                <button id="voicerestart" class="zulubutton" onclick="revoiceproblem()" style="display: none">🗣️</button>
+                <button id="restarttest" class="zulubutton" onclick="restarttest()">↻</button>
+              </div>
+              <p id="lastcorrection" style="display: none; position: static;"></p>
             </div>
             <p class="inputexample">-0.3<br>2/sqrt(3)<br>-inf<br>12:00<br>wednesday<br>0-6 (sun-sat)<br>etc.</p>
           </div>
