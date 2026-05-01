@@ -2,6 +2,27 @@
 let voicemodeenabled = false;
 let voicerate = 1;
 let voicevolume = 1;
+let voiceshowprevious = true;
+
+function applyvoiceproblemlayout(){
+  let showproblems = !voicemodeenabled || voiceshowprevious;
+
+  document.getElementById("problemscontainer").style.display = showproblems ? "" : "none";
+  document.getElementsByClassName("numrestart")[0].style.left = showproblems ? "50%" : "0%";
+  document.getElementsByClassName("inputexample")[0].style.left = showproblems ? "50%" : "0%";
+}
+
+function setvoiceshowprevious(value){
+  voiceshowprevious = value === true;
+  localStorage["voiceshowprevious"] = voiceshowprevious ? "1" : "0";
+  applyvoiceproblemlayout();
+}
+
+function loadvoicesettings(){
+  if(localStorage["voiceshowprevious"] != undefined){
+    voiceshowprevious = localStorage["voiceshowprevious"] == "1";
+  }
+}
 
 
 function voicemodeclick(yarr=true){
@@ -23,9 +44,7 @@ function voicemodeclick(yarr=true){
     })
 
 
-    document.getElementById("problemscontainer").style.display = "none";
-    document.getElementsByClassName("numrestart")[0].style.left = "0%";
-    document.getElementsByClassName("inputexample")[0].style.left = "0%";
+    applyvoiceproblemlayout();
     document.getElementById("voicemodetext").style.display = "";
     document.getElementById("voicerestart").style.display = ""
     document.getElementById("voicesettings").disabled = false;
@@ -44,9 +63,7 @@ function voicemodeclick(yarr=true){
     button.innerHTML = "voice mode: off";
     button.classList.remove("textselected");
 
-    document.getElementById("problemscontainer").style.display = "";
-    document.getElementsByClassName("numrestart")[0].style.left = "50%";
-    document.getElementsByClassName("inputexample")[0].style.left = "50%";
+    applyvoiceproblemlayout();
     document.getElementById("voicemodetext").style.display = "none";
     document.getElementById("voicerestart").style.display = "none"
     document.getElementById("voicesettings").disabled = true;
@@ -62,7 +79,15 @@ function voicesettingsclick(){
 
 
 function voiceinit(doinit=false){
+  loadvoicesettings();
   setvoicesliders(doinit);
+
+  let previouscheckbox = document.getElementById("voiceshowprevious");
+  if(previouscheckbox != null){
+    previouscheckbox.checked = voiceshowprevious;
+  }
+
+  applyvoiceproblemlayout();
 }
 
 function getvoicesliders(){
@@ -72,7 +97,7 @@ function getvoicesliders(){
 
 function setvoicesliders(doinit){
   document.getElementById("voicespeedslider").value = (voicerate - 1)*3;
-  document.getElementById("voicevolumeslider").volume = Math.round((voicevolume)*7);
+  document.getElementById("voicevolumeslider").value = Math.round((voicevolume)*7);
 }
 
 function removevoicecontainer(event, bypass){

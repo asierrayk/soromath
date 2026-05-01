@@ -207,6 +207,8 @@ function template1enter(e, press=false){
       starttest();
       correct = true;
       document.getElementById("voicemodetext").style.display = "none";
+      let mask = document.getElementsByClassName("problemmask")[0]
+      mask.style.height = "1000px";
 
     }
 
