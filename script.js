@@ -272,6 +272,11 @@ function settab(tab){
 
 function switchtab(tab, doswitch=true){
 
+  if(tab != "flashproblems"){
+    let input = document.getElementById("template1input");
+    if(input != null) input.blur();
+  }
+
   currenttab = tab;
 
   for(var i = 0; i < tabs.length; i++){
@@ -288,6 +293,10 @@ function switchtab(tab, doswitch=true){
   }
 
   if(doswitch) settab(tab);
+
+  if(tab != "flashproblems"){
+    window.scrollTo(0, 0);
+  }
 
 
 }
