@@ -31,6 +31,20 @@ function hidefinish(){
 }
 
 
+function handlefinishenter(event){
+  if(event.key != "Enter") return;
+
+  let finishscreen = document.getElementById("finishscreen");
+  if(finishscreen == null || finishscreen.style.display == "none") return;
+
+  event.preventDefault();
+  restarttest();
+  hidefinish();
+}
+
+document.addEventListener("keydown", handlefinishenter);
+
+
 function starttest(){
 
   lastcompleteraw = new Date().getTime();

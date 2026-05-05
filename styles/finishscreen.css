@@ -12,6 +12,11 @@
   margin-top: 30px;
 }
 
+#finishright{
+  display: flex;
+  flex-direction: column;
+}
+
 #cpmchart{
   position: relative;
   max-height: 250px;
@@ -69,7 +74,8 @@
 #finishwronganswers{
   max-height: 160px;
   overflow-y: auto;
-  margin-bottom: 14px;
+  margin-top: 20px;
+  margin-left: 45px;
   padding-right: 8px;
 }
 
@@ -126,5 +132,9 @@
     min-width: 90% !important;
     margin-left: -25px;
     margin-bottom: 30px;
+  }
+
+  #finishwronganswers{
+    margin-left: -25px;
   }
 }

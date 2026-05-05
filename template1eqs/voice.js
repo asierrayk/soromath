@@ -9,7 +9,8 @@ function applyvoiceproblemlayout(){
 
   let problemscontainer = document.getElementById("problemscontainer");
   let numrestart = document.getElementsByClassName("numrestart")[0];
-  let inputexample = document.getElementsByClassName("inputexample")[0];
+  let lastcorrection = document.getElementById("lastcorrection");
+  let voicemodetext = document.getElementById("voicemodetext");
 
   if(problemscontainer != null){
     problemscontainer.style.display = showproblems ? "" : "none";
@@ -19,8 +20,12 @@ function applyvoiceproblemlayout(){
     numrestart.style.left = showproblems ? "50%" : "0%";
   }
 
-  if(inputexample != null){
-    inputexample.style.left = showproblems ? "50%" : "0%";
+  if(lastcorrection != null){
+    lastcorrection.style.left = showproblems ? "50%" : "0%";
+  }
+
+  if(voicemodetext != null){
+    voicemodetext.style.display = showproblems ? "none" : "";
   }
 }
 

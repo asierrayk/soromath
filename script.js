@@ -1,7 +1,7 @@
 const synth = window.speechSynthesis;
 
 
-let tabs = ["flashproblems", "flashprofile"];
+let tabs = ["flashproblems", "generalsettings", "flashprofile"];
 let currenttab = "flashproblems";
 
 let currentmode = ["addition"];
@@ -43,14 +43,14 @@ let modes = {
   "decimal to binary": dectobinpreset,
   "binary to decimal": bintodecpreset,
 
-  "day of week [month key]": monthkeypreset,
-  "day of week [century key]": centurykeypreset,
-  "day of week [year key]": yearkeypreset,
-  "day of week [century+year key]": centuryyearkeypreset,
-  "day of week [except year]": exceptyearpreset,
-  "day of week [except day]": exceptdaypreset,
-  "day of week [leap year]": leapyearkeypreset,
-  "date to day of week": calendarpreset,
+  "DOW [month key]": monthkeypreset,
+  "DOW [century key]": centurykeypreset,
+  "DOW [year key]": yearkeypreset,
+  "DOW [century+year key]": centuryyearkeypreset,
+  "DOW [except year]": exceptyearpreset,
+  "DOW [except day]": exceptdaypreset,
+  "DOW [leap year]": leapyearkeypreset,
+  "Day of the week": calendarpreset,
   "flash anzan": flashanzanpreset,
 
   "month to number": monthnumpreset,
@@ -67,6 +67,86 @@ let modes = {
 }
 
 let currentversion = "1";
+let showlivecorrections = true;
+let calendarappsettings = {
+  dateOrder: "DMY",
+  monthFormat: "numeric2",
+  dateSeparator: "/",
+  monthLanguage: "en"
+};
+
+function loadgeneralsettings(){
+  if(localStorage["showlivecorrections"] != undefined){
+    showlivecorrections = localStorage["showlivecorrections"] == "1";
+  }
+
+  if(localStorage["calendar_dateOrder"] != undefined){
+    calendarappsettings.dateOrder = localStorage["calendar_dateOrder"];
+  }
+  if(localStorage["calendar_monthFormat"] != undefined){
+    calendarappsettings.monthFormat = localStorage["calendar_monthFormat"];
+  }
+  if(localStorage["calendar_dateSeparator"] != undefined){
+    calendarappsettings.dateSeparator = localStorage["calendar_dateSeparator"];
+  }
+  if(localStorage["calendar_monthLanguage"] != undefined){
+    calendarappsettings.monthLanguage = localStorage["calendar_monthLanguage"];
+  }
+
+  let checkbox = document.getElementById("showlivecorrections");
+  if(checkbox != null){
+    checkbox.checked = showlivecorrections;
+  }
+
+  let dateOrder = document.getElementById("generaldateorder");
+  if(dateOrder != null) dateOrder.value = calendarappsettings.dateOrder;
+
+  let monthFormat = document.getElementById("generalmonthformat");
+  if(monthFormat != null) monthFormat.value = calendarappsettings.monthFormat;
+
+  let dateSeparator = document.getElementById("generaldateseparator");
+  if(dateSeparator != null) dateSeparator.value = calendarappsettings.dateSeparator;
+
+  let monthLanguage = document.getElementById("generalmonthlanguage");
+  if(monthLanguage != null) monthLanguage.value = calendarappsettings.monthLanguage;
+}
+
+function setshowlivecorrections(value){
+  showlivecorrections = value === true;
+  localStorage["showlivecorrections"] = showlivecorrections ? "1" : "0";
+
+  if(!showlivecorrections && typeof template1clearcorrection == "function"){
+    template1clearcorrection();
+  }
+}
+
+function setcalendarappsetting(key, value){
+  if(calendarappsettings[key] == value) return;
+
+  calendarappsettings[key] = value;
+  localStorage["calendar_" + key] = value;
+  init();
+}
+
+function setgeneraldateorder(value){
+  setcalendarappsetting("dateOrder", value);
+}
+
+function setgeneralmonthformat(value){
+  setcalendarappsetting("monthFormat", value);
+}
+
+function setgeneraldateseparator(value){
+  setcalendarappsetting("dateSeparator", value);
+}
+
+function setgeneralmonthlanguage(value){
+  setcalendarappsetting("monthLanguage", value);
+}
+
+function showgeneralsettings(){
+  switchtab("generalsettings");
+}
 
 function loaddifficulty(){
 
@@ -135,7 +215,7 @@ function savedifficulty(){
 
   let difficultysettings = {};
 
-  let savekeys = ["range1", "range2", "range3", "range", "nonummode", "secondsmode", "preset", "dateOrder", "monthFormat", "dateSeparator", "monthLanguage"]
+  let savekeys = ["range1", "range2", "range3", "range", "nonummode", "secondsmode", "preset"]
 
   let keys = Object.keys(modes);
 
@@ -252,7 +332,9 @@ function init(){
     initchart();
   }
 
-  restarttest(focus=false);
+  loadgeneralsettings();
+
+  restarttest();
 
   profileinit();
 

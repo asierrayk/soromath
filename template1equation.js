@@ -108,7 +108,7 @@ function template1init(){
         let p1height = problem.getBoundingClientRect().height
         let inputheight = input.getBoundingClientRect().height
 
-        t1heighttrack = Math.round((inputheight - p1height) / 2 - 21)
+        t1heighttrack = (inputheight - p1height) / 2 - 2
         document.getElementById("template1problems").style.top = t1heighttrack + "px";
       }
       if(i > 0) problem.classList.add("hiddenuntilstart");
@@ -150,11 +150,18 @@ function template1clearcorrection(){
 }
 
 function template1showcorrectanswer(answerText){
+  if(typeof showlivecorrections != "undefined" && !showlivecorrections){
+    template1clearcorrection();
+    return;
+  }
+
   let correction = document.getElementById("lastcorrection");
   if(correction == null) return;
 
   correction.textContent = answerText;
   correction.style.display = "";
+
+  setTimeout(() => { template1clearcorrection(); }, 900);
 }
 
 function template1type(e){
@@ -270,12 +277,10 @@ function template1enter(e, press=false){
 
     }
 
-    // let fadeoutelem = problems.children[mainproblemindex];
-    // if(correct){
-    //   setTimeout(() => {
-    //     $(fadeoutelem).animate({ opacity: '0' }, {duration: 400, easing:"linear"});
-    //   }, 500)
-    // }
+    let fadeoutelem = problems.children[mainproblemindex];
+    setTimeout(() => {
+      $(fadeoutelem).animate({ opacity: '0' }, {duration: 400, easing:"linear"});
+    }, 500)
 
     if(!(totalproblems != null && problemindex + 1 == totalproblems + 1)){
       let height1 = problems.children[mainproblemindex].getBoundingClientRect().height

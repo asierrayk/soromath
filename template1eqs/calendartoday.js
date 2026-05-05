@@ -21,19 +21,11 @@ let calendarpreset = {
       },
       "custom":{}
     },
-    range1: [0,8999942400000],
-    dateOrder: "DMY",
-    monthFormat: "numeric2",
-    dateSeparator: "/",
-    monthLanguage: "en"
+    range1: [0,8999942400000]
   },
   settingsgui: {
 
     range1: null,
-    dateOrder: null,
-    monthFormat: null,
-    dateSeparator: null,
-    monthLanguage: null,
     doneinit: false,
     init: basicpresetgendate("Date Range"),
     setpreset: setpresetdate,
@@ -175,66 +167,6 @@ function basicpresetdate(self, range1label, changegui){
   modesettingssection.appendChild(numRange);
   modesettingssection.appendChild(range1[0])
 
-  function makecalendarselect(label, key, options){
-    let settingLabel = document.createElement("p");
-    settingLabel.innerHTML = label;
-    settingLabel.classList.add("settinglabel");
-    settingLabel.style.marginTop = "20px";
-
-    let parent = document.createElement("div");
-    parent.style.display = "flex";
-    parent.style.justifyContent = "center";
-
-    let select = document.createElement("select");
-    select.classList.add("numinput");
-    select.style.width = "180px";
-    select.style.margin = "7px";
-
-    for(var i = 0; i < options.length; i++){
-      let option = document.createElement("option");
-      option.value = options[i][0];
-      option.innerHTML = options[i][1];
-      select.appendChild(option);
-    }
-
-    select.value = self.settings[key];
-    select.onchange = () => {
-      self.settings[key] = select.value;
-      self.settingsgui.matchpreset(self);
-      init();
-    };
-
-    parent.appendChild(select);
-    modesettingssection.appendChild(settingLabel);
-    modesettingssection.appendChild(parent);
-    self.settingsgui[key] = select;
-  }
-
-  makecalendarselect("Date Order", "dateOrder", [
-    ["DMY", "Day Month Year"],
-    ["MDY", "Month Day Year"],
-    ["YMD", "Year Month Day"]
-  ]);
-
-  makecalendarselect("Month Format", "monthFormat", [
-    ["numeric2", "01"],
-    ["numeric", "1"],
-    ["short", "Jan"],
-    ["long", "January"]
-  ]);
-
-  makecalendarselect("Separator", "dateSeparator", [
-    ["/", "/"],
-    ["-", "-"],
-    [".", "."],
-    ["space", "space"]
-  ]);
-
-  makecalendarselect("Month Language", "monthLanguage", [
-    ["en", "English"],
-    ["es", "Spanish"]
-  ]);
-
   function oninput(input){
     return input.valueAsNumber;
   }
@@ -290,11 +222,28 @@ function setpresetdate(self, presetname){
 
 }
 
-function calendardateseparator(settings=calendarpreset.settings){
+function calendarresolvedsettings(settings){
+  if(settings != undefined && settings.dateOrder != undefined) return settings;
+
+  if(typeof calendarappsettings != "undefined") return calendarappsettings;
+
+  return {
+    dateOrder: "DMY",
+    monthFormat: "numeric2",
+    dateSeparator: "/",
+    monthLanguage: "en"
+  };
+}
+
+function calendardateseparator(settings=calendarresolvedsettings()){
+  settings = calendarresolvedsettings(settings);
+  if(settings.dateSeparator == "de") return " de ";
   return settings.dateSeparator == "space" ? " " : settings.dateSeparator;
 }
 
-function calendarformatmonth(month, settings=calendarpreset.settings){
+function calendarformatmonth(month, settings=calendarresolvedsettings()){
+  settings = calendarresolvedsettings(settings);
+
   let monthnames = {
     en: {
       short: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -316,7 +265,8 @@ function calendarformatmonth(month, settings=calendarpreset.settings){
   return monthpart;
 }
 
-function calendarformatmonthyear(month, year, settings=calendarpreset.settings){
+function calendarformatmonthyear(month, year, settings=calendarresolvedsettings()){
+  settings = calendarresolvedsettings(settings);
   let separator = calendardateseparator(settings);
   let monthpart = calendarformatmonth(month, settings);
 
@@ -324,7 +274,8 @@ function calendarformatmonthyear(month, year, settings=calendarpreset.settings){
   return [monthpart, year].join(separator);
 }
 
-function calendarformatdate(date, settings=calendarpreset.settings){
+function calendarformatdate(date, settings=calendarresolvedsettings()){
+  settings = calendarresolvedsettings(settings);
   let day = date.getDate();
   let month = date.getMonth();
   let year = date.getFullYear();
@@ -372,7 +323,7 @@ function addcalendar(main=false,self=calendarpreset,name=null){
 
   let part = problemarr[0];
 
-  problem.innerHTML = calendarformatdate(new Date(part), self.settings);
+  problem.innerHTML = calendarformatdate(new Date(part));
   problem.classList.add("problem");
 
   if(main) problem.id = "mainproblem"
